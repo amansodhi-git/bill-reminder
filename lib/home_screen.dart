@@ -1,9 +1,9 @@
-import 'package:bill_reminder/edit_bill_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'bill_provider.dart';
 import 'add_bill_screen.dart';
 import 'bill.dart';
+import 'edit_bill_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bill Reminder'),
+        title: Text(_showPaid ? 'Paid Bills' : 'Upcoming Bills'),
         actions: [
           Switch(
             value: _showPaid,

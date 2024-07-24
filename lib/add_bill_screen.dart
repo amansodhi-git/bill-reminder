@@ -100,7 +100,7 @@ class _AddBillScreenState extends State<AddBillScreen> {
             ElevatedButton(
               onPressed: () {
                 final newBill = Bill(
-                  id: Uuid().v4(), // Generate a unique ID for the new bill
+                  id: Uuid().v4(),
                   description: _descriptionController.text,
                   amount: double.parse(_amountController.text),
                   dueDate: _selectedDate,

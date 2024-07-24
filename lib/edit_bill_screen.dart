@@ -97,7 +97,6 @@ class _EditBillScreenState extends State<EditBillScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -127,9 +126,8 @@ class _EditBillScreenState extends State<EditBillScreen> {
                     .updateBill(updatedBill);
                 Navigator.pop(context);
               },
-              child: Text('Update Bill'),
+              child: Text('Save Changes'),
             ),
-            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Provider.of<BillProvider>(context, listen: false)
