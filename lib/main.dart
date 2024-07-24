@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => BillProvider(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Bill Reminder',
         theme: ThemeData(
           primarySwatch: Colors.blue,

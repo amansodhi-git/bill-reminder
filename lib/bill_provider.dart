@@ -60,6 +60,9 @@ class BillProvider with ChangeNotifier {
       channelDescription: 'Reminders for upcoming bills',
       importance: Importance.max,
       priority: Priority.high,
+      sound: RawResourceAndroidNotificationSound(
+          'notification_sound'), // Set the sound here
+      playSound: true,
     );
 
     final platformChannelSpecifics = NotificationDetails(

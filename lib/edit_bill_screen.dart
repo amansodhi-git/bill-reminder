@@ -135,7 +135,8 @@ class _EditBillScreenState extends State<EditBillScreen> {
                 Navigator.pop(context);
               },
               child: Text('Delete Bill'),
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(198, 255, 76, 63)),
             ),
           ],
         ),
