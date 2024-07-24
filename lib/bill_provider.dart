@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'bill.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'db_helper.dart';
+import 'bill.dart';
 
 class BillProvider with ChangeNotifier {
   List<Bill> _bills = [];
+  final DBHelper _dbHelper = DBHelper();
 
   List<Bill> get bills => _bills;
 
@@ -15,15 +17,23 @@ class BillProvider with ChangeNotifier {
         InitializationSettings(
             android: AndroidInitializationSettings('@mipmap/ic_launcher'));
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    _loadBills();
   }
 
-  void addBill(Bill bill) {
+  Future<void> _loadBills() async {
+    _bills = await _dbHelper.getBills();
+    notifyListeners();
+  }
+
+  Future<void> addBill(Bill bill) async {
+    await _dbHelper.insertBill(bill);
     _bills.add(bill);
     scheduleNotification(bill);
     notifyListeners();
   }
 
-  void updateBill(Bill updatedBill) {
+  Future<void> updateBill(Bill updatedBill) async {
+    await _dbHelper.updateBill(updatedBill);
     final index = _bills.indexWhere((bill) => bill.id == updatedBill.id);
     if (index != -1) {
       _bills[index] = updatedBill;
@@ -33,14 +43,21 @@ class BillProvider with ChangeNotifier {
     }
   }
 
+  Future<void> deleteBill(String id) async {
+    await _dbHelper.deleteBill(id);
+    _bills.removeWhere((bill) => bill.id == id);
+    flutterLocalNotificationsPlugin.cancel(id.hashCode);
+    notifyListeners();
+  }
+
   void scheduleNotification(Bill bill) {
     final scheduledNotificationDateTime =
         bill.dueDate.subtract(bill.reminderDuration);
 
     final androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'bill_reminder_channel', // channel ID
-      'Bill Reminders', // channel name
-      channelDescription: 'Reminders for upcoming bills', // channel description
+      'bill_reminder_channel',
+      'Bill Reminders',
+      channelDescription: 'Reminders for upcoming bills',
       importance: Importance.max,
       priority: Priority.high,
     );
