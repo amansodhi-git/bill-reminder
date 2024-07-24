@@ -33,6 +33,12 @@ class BillListScreen extends StatelessWidget {
                 title: Text(bill.description),
                 subtitle:
                     Text('Amount: \$${bill.amount}, Due: ${bill.dueDate}'),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    _showDeleteConfirmationDialog(context, billProvider, bill);
+                  },
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -46,6 +52,34 @@ class BillListScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+
+  void _showDeleteConfirmationDialog(
+      BuildContext context, BillProvider billProvider, Bill bill) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Bill'),
+          content: Text('Are you sure you want to delete this bill?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Delete'),
+              onPressed: () {
+                billProvider.deleteBill(bill.id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

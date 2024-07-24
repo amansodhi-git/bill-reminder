@@ -111,6 +111,16 @@ class _EditBillScreenState extends State<EditBillScreen> {
               },
               child: Text('Update Bill'),
             ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Provider.of<BillProvider>(context, listen: false)
+                    .deleteBill(widget.bill.id);
+                Navigator.pop(context);
+              },
+              child: Text('Delete Bill'),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            ),
           ],
         ),
       ),
