@@ -17,6 +17,7 @@ class _EditBillScreenState extends State<EditBillScreen> {
   late TextEditingController _amountController;
   late DateTime _selectedDate;
   late Duration _reminderDuration;
+  late bool _isPaid;
 
   @override
   void initState() {
@@ -27,6 +28,7 @@ class _EditBillScreenState extends State<EditBillScreen> {
         TextEditingController(text: widget.bill.amount.toString());
     _selectedDate = widget.bill.dueDate;
     _reminderDuration = widget.bill.reminderDuration;
+    _isPaid = widget.bill.isPaid;
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -96,6 +98,21 @@ class _EditBillScreenState extends State<EditBillScreen> {
               ],
             ),
             SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Paid:'),
+                Switch(
+                  value: _isPaid,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _isPaid = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 final updatedBill = Bill(
@@ -104,6 +121,7 @@ class _EditBillScreenState extends State<EditBillScreen> {
                   amount: double.parse(_amountController.text),
                   dueDate: _selectedDate,
                   reminderDuration: _reminderDuration,
+                  isPaid: _isPaid,
                 );
                 Provider.of<BillProvider>(context, listen: false)
                     .updateBill(updatedBill);

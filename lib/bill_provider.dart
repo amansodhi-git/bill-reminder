@@ -69,7 +69,7 @@ class BillProvider with ChangeNotifier {
     flutterLocalNotificationsPlugin.schedule(
       bill.hashCode,
       'Bill Reminder',
-      'Your bill "${bill.description}" is due on ${bill.dueDate}',
+      'Your bill "${bill.description}" is due on ${bill.dueDate.toLocal()}',
       scheduledNotificationDateTime,
       platformChannelSpecifics,
     );

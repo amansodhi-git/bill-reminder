@@ -31,8 +31,8 @@ class BillListScreen extends StatelessWidget {
               final bill = billProvider.bills[index];
               return ListTile(
                 title: Text(bill.description),
-                subtitle:
-                    Text('Amount: \$${bill.amount}, Due: ${bill.dueDate}'),
+                subtitle: Text(
+                    'Amount: \$${bill.amount}, Due: ${bill.dueDate}, Paid: ${bill.isPaid ? "Yes" : "No"}'),
                 trailing: IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () {

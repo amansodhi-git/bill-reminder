@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import 'bill_provider.dart';
 import 'bill.dart';
 
@@ -13,6 +14,7 @@ class _AddBillScreenState extends State<AddBillScreen> {
   final _amountController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   Duration _reminderDuration = Duration(days: 1);
+  bool _isPaid = false;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -31,7 +33,7 @@ class _AddBillScreenState extends State<AddBillScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add New Bill'),
+        title: Text('Add Bill'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -80,16 +82,32 @@ class _AddBillScreenState extends State<AddBillScreen> {
                 ),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Paid:'),
+                Switch(
+                  value: _isPaid,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _isPaid = value;
+                    });
+                  },
+                ),
+              ],
+            ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 final newBill = Bill(
-                  id: DateTime.now().toString(),
+                  id: Uuid().v4(), // Generate a unique ID for the new bill
                   description: _descriptionController.text,
                   amount: double.parse(_amountController.text),
                   dueDate: _selectedDate,
                   reminderDuration: _reminderDuration,
+                  isPaid: _isPaid,
                 );
+                print('Adding bill: $newBill');
                 Provider.of<BillProvider>(context, listen: false)
                     .addBill(newBill);
                 Navigator.pop(context);

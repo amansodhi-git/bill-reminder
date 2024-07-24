@@ -4,6 +4,7 @@ class Bill {
   final double amount;
   final DateTime dueDate;
   final Duration reminderDuration;
+  final bool isPaid;
 
   Bill({
     required this.id,
@@ -11,9 +12,9 @@ class Bill {
     required this.amount,
     required this.dueDate,
     required this.reminderDuration,
+    required this.isPaid,
   });
 
-  // Convert a Bill object into a map
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -21,17 +22,7 @@ class Bill {
       'amount': amount,
       'dueDate': dueDate.toIso8601String(),
       'reminderDuration': reminderDuration.inDays,
+      'isPaid': isPaid ? 1 : 0,
     };
-  }
-
-  // Create a Bill object from a map
-  factory Bill.fromMap(Map<String, dynamic> map) {
-    return Bill(
-      id: map['id'],
-      description: map['description'],
-      amount: map['amount'],
-      dueDate: DateTime.parse(map['dueDate']),
-      reminderDuration: Duration(days: map['reminderDuration']),
-    );
   }
 }
