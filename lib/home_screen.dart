@@ -12,12 +12,17 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _showPaid = false;
+  bool _sortByDueDate = false;
 
   @override
   Widget build(BuildContext context) {
     final bills = Provider.of<BillProvider>(context).bills;
-    final filteredBills =
+    var filteredBills =
         bills.where((bill) => bill.isPaid == _showPaid).toList();
+
+    if (_sortByDueDate) {
+      filteredBills.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -37,28 +42,45 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: filteredBills.length,
-        itemBuilder: (context, index) {
-          final bill = filteredBills[index];
-          return ListTile(
-            title: Text(bill.description),
-            subtitle: Text(
-                'Amount: \$${bill.amount.toStringAsFixed(2)}\nDue Date: ${bill.dueDate.toLocal().toString().split(' ')[0]}'),
-            trailing: Icon(
-              bill.isPaid ? Icons.check_circle : Icons.warning,
-              color: bill.isPaid ? Colors.green : Colors.red,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => EditBillScreen(bill: bill),
-                ),
-              );
+      body: Column(
+        children: [
+          SwitchListTile(
+            title: Text('Sort by Due Date'),
+            value: _sortByDueDate,
+            onChanged: (bool value) {
+              setState(() {
+                _sortByDueDate = value;
+              });
             },
-          );
-        },
+            secondary: Icon(Icons.sort),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredBills.length,
+              itemBuilder: (context, index) {
+                final bill = filteredBills[index];
+                return ListTile(
+                  title: Text(bill.description),
+                  subtitle: Text(
+                    'Amount: \$${bill.amount.toStringAsFixed(2)}\nDue Date: ${bill.dueDate.toLocal().toString().split(' ')[0]}',
+                  ),
+                  trailing: Icon(
+                    bill.isPaid ? Icons.check_circle : Icons.warning,
+                    color: bill.isPaid ? Colors.green : Colors.red,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditBillScreen(bill: bill),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
