@@ -24,6 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
       filteredBills.sort((a, b) => a.dueDate.compareTo(b.dueDate));
     }
 
+    final totalAmount =
+        filteredBills.fold(0.0, (sum, bill) => sum + bill.amount);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_showPaid ? 'Paid Bills' : 'Upcoming Bills'),
@@ -82,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -90,6 +94,45 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
         child: Icon(Icons.add),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 6.0,
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Total Amount Due:',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              Text(
+                '\$${totalAmount.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
