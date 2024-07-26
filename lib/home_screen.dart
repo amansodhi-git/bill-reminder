@@ -86,14 +86,17 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddBillScreen()),
-          );
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddBillScreen()),
+            );
+          },
+          child: Icon(Icons.add),
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
@@ -115,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Total Amount Due:',
+                _showPaid ? 'Total Amount Paid:' : 'Total Amount Due:',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
